@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Silver layer: staged orders enriched with customer info and derived columns."
+    columns:
+      - name: order_id
+        description: "Primary key for orders (o_orderkey)."
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Foreign key linking orders to customers."
+      - name: customer_name
+        description: "Customer name from TPCH customer table."
+      - name: order_date
+        description: "Date the order was placed."
+      - name: order_year
+        description: "Year derived from order_date."
+      - name: total_price
+        description: "Total price for the order."
+
+  - name: customer_revenue
+    description: "Gold layer: total revenue aggregated by customer."
+    columns:
+      - name: customer_id
+        description: "Primary key for customers (c_custkey)."
+        tests:
+          - unique
+          - not_null
+      - name: customer_name
+        description: "Customer name."
+      - name: total_revenue
+        description: "Revenue calculated as SUM(l_extendedprice * (1 - l_discount))."
