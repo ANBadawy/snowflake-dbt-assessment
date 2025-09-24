@@ -29,7 +29,7 @@ This project was built and optimized for **dbt Cloud** with **Snowflake integrat
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/ANBadawy/snowflake-dbt-assessment.git
-   cd <your-repo>
+   cd snowflake-dbt-assessment
    ```
 
 2. **Setup dbt Cloud**
