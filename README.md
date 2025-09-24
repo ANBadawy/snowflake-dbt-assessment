@@ -18,9 +18,82 @@ This project demonstrates how to use **dbt Cloud with Snowflake** to build a sca
 ## How to Run the Project
 
 ### Prerequisites
-- Snowflake account with TPCH sample data access
+- Snowflake account with appropriate permissions
 - dbt Cloud account (recommended) or local dbt installation
 - GitHub repository access
+
+### Snowflake Environment Setup
+
+Before running the dbt project, you'll need to set up your Snowflake environment. Execute these SQL commands in your Snowflake worksheet:
+
+#### 1. Create Development Warehouse
+```sql
+-- Create a development warehouse
+CREATE WAREHOUSE DEV_WH WITH
+  WAREHOUSE_SIZE = 'XSMALL'
+  AUTO_SUSPEND = 60  -- Auto-suspend after 1 minute of inactivity
+  AUTO_RESUME = TRUE
+  INITIALLY_SUSPENDED = FALSE;
+
+-- Set it as your current warehouse
+USE WAREHOUSE DEV_WH;
+```
+
+#### 2. Setup Sample Data Access
+```sql
+-- Check if SNOWFLAKE_SAMPLE_DATA database exists
+SHOW DATABASES LIKE 'SNOWFLAKE_SAMPLE_DATA';
+
+-- Grant privileges so your role can query it
+GRANT IMPORTED PRIVILEGES ON DATABASE SNOWFLAKE_SAMPLE_DATA TO ROLE PUBLIC;
+
+-- If it doesn't exist, create it from the shared database
+-- CREATE DATABASE SNOWFLAKE_SAMPLE_DATA FROM SHARE SFC_SAMPLES.SAMPLE_DATA;
+```
+
+#### 3. Create dbt Target Database
+```sql
+-- Create database for your dbt models
+CREATE DATABASE DBT_DEMO;
+
+-- Create schemas following medallion architecture
+CREATE SCHEMA DBT_DEMO.BRONZE;  -- Raw/staging data
+CREATE SCHEMA DBT_DEMO.SILVER;  -- Cleaned/transformed data  
+CREATE SCHEMA DBT_DEMO.GOLD;    -- Business-ready aggregated data
+
+-- Set permissions (if needed)
+GRANT ALL ON DATABASE DBT_DEMO TO ROLE PUBLIC;
+GRANT ALL ON ALL SCHEMAS IN DATABASE DBT_DEMO TO ROLE PUBLIC;
+```
+
+#### 4. Verify Setup
+```sql
+-- Set context to sample data
+USE DATABASE SNOWFLAKE_SAMPLE_DATA;
+USE SCHEMA TPCH_SF1;
+
+-- Verify key tables are accessible
+SELECT COUNT(*) FROM snowflake_sample_data.tpch_sf1.customer;
+SELECT COUNT(*) FROM snowflake_sample_data.tpch_sf1.orders;
+SELECT COUNT(*) FROM snowflake_sample_data.tpch_sf1.lineitem;
+
+-- Test table relationships
+SELECT 
+    o.o_orderkey,
+    o.o_custkey,
+    c.c_name,
+    o.o_orderdate,
+    o.o_totalprice
+FROM snowflake_sample_data.tpch_sf1.orders o
+JOIN snowflake_sample_data.tpch_sf1.customer c 
+    ON o.o_custkey = c.c_custkey
+LIMIT 5;
+```
+
+**Important Notes:**
+- The `DEV_WH` warehouse will auto-suspend after 1 minute to minimize costs
+- Sample data should be available by default in most Snowflake accounts
+- If you encounter permission issues, contact your Snowflake administrator
 
 ### Option 1: Run in dbt Cloud (Recommended)
 
@@ -214,5 +287,6 @@ This project is deployed in **dbt Cloud** with a scheduled job.
    ```bash
    dbt build
    ```
+
 
 
