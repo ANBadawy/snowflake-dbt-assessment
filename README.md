@@ -39,7 +39,7 @@ This project was built and optimized for **dbt Cloud** with **Snowflake integrat
    - Configure your development credentials
 
 3. **Run the Pipeline**
-   - Open the **Develop** tab in dbt Cloud IDE
+   - Open the **Studio** tab in dbt Cloud IDE
    - Execute the following commands:
    ```sql
    dbt deps          # Install any dependencies
@@ -153,3 +153,4 @@ The project defines downstream usage through **exposures**:
 - **Warehouse**: `DEV_WH`
 - **Database**: `DBT_DEMO`
 - **Sample Data**: `SNOWFLAKE_SAMPLE_DATA.TPCH_SF1`
+
