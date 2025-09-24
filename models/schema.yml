@@ -32,3 +32,41 @@ models:
         description: "Customer name."
       - name: total_revenue
         description: "Revenue calculated as SUM(l_extendedprice * (1 - l_discount))."
+
+  - name: orders_by_year
+    description: "Gold layer: revenue and order counts aggregated by order year."
+    columns:
+      - name: order_year
+        description: "Year of the order."
+        tests:
+          - not_null
+      - name: total_revenue
+        description: "Total revenue in that year."
+      - name: order_count
+        description: "Number of orders in that year."
+
+  - name: customer_revenue_by_nation
+    description: "Gold layer: total revenue aggregated by customer and nation."
+    columns:
+      - name: customer_id
+        description: "Primary key for customers."
+        tests:
+          - not_null
+          - unique
+      - name: customer_name
+        description: "Name of the customer."
+      - name: nation
+        description: "Nation of the customer."
+      - name: total_revenue
+        description: "Revenue calculated as SUM(l_extendedprice * (1 - l_discount))."
+
+exposures:
+  - name: customer_revenue_dashboard
+    type: dashboard
+    url: https://app.snowflake.com/jesnxmo/ly91571/#/customer_revenue-dA7kDCLYx
+    description: "BI dashboard showing total customer revenue by customer and nation."
+    depends_on:
+      - ref('customer_revenue')
+      - ref('customer_revenue_by_nation')
+    owner:
+      name: Analytics Team

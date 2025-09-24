@@ -1,5 +1,6 @@
 -- Gold model: Revenue aggregated by customer
 {{ config(materialized='table') }}
+
 with orders as (
     select * from {{ ref('stg_orders') }}
 ),

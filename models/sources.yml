@@ -12,3 +12,5 @@ sources:
         description: "The table storing orders placed by customers."
       - name: lineitem
         description: "The table storing line-item details for each order."
+      - name: nation
+        description: "The table storing nations, joined with customers for geography info."
