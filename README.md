@@ -24,7 +24,7 @@ This project demonstrates how to use **dbt Cloud with Snowflake** to build a sca
 
 ### Snowflake Environment Setup
 
-Before running the dbt project, you'll need to set up your Snowflake environment. Execute these SQL commands in your Snowflake worksheet:
+Before running the dbt project, you'll need to set up your Snowflake environment [Snowflake Cloud](https://www.snowflake.com/en/). Execute these SQL commands in your Snowflake worksheet:
 
 #### 1. Create Development Warehouse
 ```sql
@@ -287,6 +287,7 @@ This project is deployed in **dbt Cloud** with a scheduled job.
    ```bash
    dbt build
    ```
+
 
 
 
