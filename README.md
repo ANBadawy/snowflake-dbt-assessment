@@ -4,6 +4,8 @@
 
 This project demonstrates how to use **dbt Cloud with Snowflake** to build a scalable data transformation pipeline following a **Medallion architecture**. The project transforms TPCH sample data through multiple layers to create business-ready analytics tables.
 
+Watch the explanation video here:  [Explanation Video](https://drive.google.com/file/d/1nCuRdB6RacnPFCXjw_F4X2Mk__4_p_-G/view?usp=drive)
+
 ### Architecture Layers
 - **Bronze (Sources)**: TPCH sample tables in Snowflake (`customer`, `orders`, `lineitem`, `nation`)
 - **Silver (Staging)**: Cleaned and standardized models (`stg_orders`)
@@ -287,6 +289,7 @@ This project is deployed in **dbt Cloud** with a scheduled job.
    ```bash
    dbt build
    ```
+
 
 
 
