@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: tpch
+    description: "Raw TPCH data provided by Snowflake"
+    database: SNOWFLAKE_SAMPLE_DATA
+    schema: TPCH_SF1
+    tables:
+      - name: customer
+        description: "The table storing TPCH customers."
+      - name: orders
+        description: "The table storing orders placed by customers."
+      - name: lineitem
+        description: "The table storing line-item details for each order."
+      - name: nation
+        description: "The table storing nations, joined with customers for geography info."
