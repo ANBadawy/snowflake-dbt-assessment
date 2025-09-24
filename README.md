@@ -109,7 +109,6 @@ If you prefer to run outside dbt Cloud:
 │   │   ├── customer_revenue.sql
 │   │   ├── orders_by_year.sql
 │   │   └── customer_revenue_by_nation.sql
-│   └── source.yml               # source definitions
 │   └── schema.yml               # Models + Tests + documentation + exposures
 └── README.md                    # This file
 ```
