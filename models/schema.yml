@@ -63,7 +63,7 @@ models:
 exposures:
   - name: customer_revenue_dashboard
     type: dashboard
-    url: https://app.snowflake.com/jesnxmo/ly91571/#/customer_revenue-dA7kDCLYx
+    url: https://app.snowflake.com/jesnxmo/ly91571/#/customer_revenue-dA7kDCLYx # Here should be for example Google Looker to show it
     description: "BI dashboard showing total customer revenue by customer and nation."
     depends_on:
       - ref('customer_revenue')
