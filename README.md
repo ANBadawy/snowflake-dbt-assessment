@@ -113,6 +113,56 @@ If you prefer to run outside dbt Cloud:
 └── README.md                    # This file
 ```
 
+## Models Descriptions
+
+### Silver Layer (Staging)
+
+#### `stg_orders`
+**Purpose**: Staged orders enriched with customer information and derived columns  
+**Key Features**:
+- Primary key: `order_id` (from `o_orderkey`)
+- Enriched with customer names from TPCH customer table
+- Includes derived `order_year` column for time-based analysis
+- Forms the foundation for all downstream Gold layer models
+
+**Columns**:
+- `order_id`: Primary key for orders (tested for uniqueness and not null)
+- `customer_id`: Foreign key linking to customers
+- `customer_name`: Customer name from TPCH customer table
+- `order_date`: Date the order was placed
+- `order_year`: Derived year from order_date for aggregations
+- `total_price`: Total price for the order
+
+### Gold Layer (Marts)
+
+#### `customer_revenue`
+**Purpose**: Total revenue aggregated by customer for customer-centric analysis  
+**Business Use**: Customer lifetime value analysis, top customer identification
+
+**Columns**:
+- `customer_id`: Primary key for customers (tested for uniqueness and not null)
+- `customer_name`: Customer name for reporting
+- `total_revenue`: Revenue calculated as `SUM(l_extendedprice * (1 - l_discount))`
+
+#### `orders_by_year`
+**Purpose**: Revenue and order trends aggregated by year  
+**Business Use**: Time series analysis, year-over-year performance tracking
+
+**Columns**:
+- `order_year`: Year of the order (tested for not null)
+- `total_revenue`: Total revenue for that year
+- `order_count`: Number of orders placed in that year
+
+#### `customer_revenue_by_nation`
+**Purpose**: Revenue analysis by customer and geographic region  
+**Business Use**: Regional performance analysis, international customer insights
+
+**Columns**:
+- `customer_id`: Primary key for customers (tested for uniqueness and not null)
+- `customer_name`: Customer name
+- `nation`: Customer's nation/country
+- `total_revenue`: Revenue calculated as `SUM(l_extendedprice * (1 - l_discount))`
+
 ## 🧪 Data Quality Tests
 
 The project implements comprehensive testing at each layer:
@@ -153,4 +203,16 @@ The project defines downstream usage through **exposures**:
 - **Warehouse**: `DEV_WH`
 - **Database**: `DBT_DEMO`
 - **Sample Data**: `SNOWFLAKE_SAMPLE_DATA.TPCH_SF1`
+
+## Deployment
+
+This project is deployed in **dbt Cloud** with a scheduled job.
+
+- **Environment**: Deployment environment connected to Snowflake
+- **Schedule**: Weekly (Sunday midnight) via cron: `0 0 * * 0`
+- **The Given Commands**:
+   ```bash
+   dbt build
+   ```
+
 
